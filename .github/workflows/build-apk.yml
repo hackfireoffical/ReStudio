@@ -129,7 +129,7 @@ jobs:
               adb devices -l
             } >> screenshots/emulator-diagnostics.txt 2>&1
           script: |
-            set -euo pipefail
+            set -eu
             echo 'ADB device list after emulator boot'
             adb devices -l | tee screenshots/adb-devices.txt
             adb wait-for-device
