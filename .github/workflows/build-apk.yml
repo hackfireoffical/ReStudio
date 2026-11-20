@@ -75,3 +75,74 @@ jobs:
           path: restudio-debug.apk
           if-no-files-found: error
           retention-days: 14
+
+  emulator-test:
+    name: Android emulator UI verification
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: restudio-debug-apk
+          path: test-apk
+
+      - name: Run ReStudio on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: |
+            set -euo pipefail
+            mkdir -p screenshots
+
+            echo 'Installing ReStudio APK on a clean Android 15 emulator'
+            adb install test-apk/restudio-debug.apk
+
+            echo 'Checking installed package metadata'
+            adb shell dumpsys package com.hackfire.restudio > screenshots/package-dump.txt
+            grep -q 'versionName=1.1.6' screenshots/package-dump.txt
+            grep -q 'versionCode=116' screenshots/package-dump.txt
+
+            echo 'Launching ReStudio'
+            adb shell monkey -p com.hackfire.restudio 1
+            sleep 5
+            adb shell dumpsys activity activities > screenshots/activities.txt
+            grep -q 'com.hackfire.restudio' screenshots/activities.txt
+            adb exec-out screencap -p > screenshots/app-running.png
+
+            echo 'Opening launcher app drawer to inspect the actual Android icon'
+            adb shell input keyevent KEYCODE_HOME
+            sleep 2
+            adb shell input swipe 540 1750 540 450 350
+            sleep 3
+            adb shell uiautomator dump /sdcard/launcher.xml >/dev/null
+            adb pull /sdcard/launcher.xml screenshots/launcher.xml >/dev/null
+            grep -q 'ReStudio' screenshots/launcher.xml
+            adb exec-out screencap -p > screenshots/launcher-app-drawer.png
+
+            echo 'Opening Android package installer for an update-prompt screenshot'
+            adb push test-apk/restudio-debug.apk /sdcard/Download/restudio-debug.apk >/dev/null
+            adb shell am start -a android.intent.action.VIEW \
+              -d file:///sdcard/Download/restudio-debug.apk \
+              -t application/vnd.android.package-archive \
+              --grant-read-uri-permission || true
+            sleep 4
+            adb exec-out screencap -p > screenshots/installer-screen.png
+            adb shell uiautomator dump /sdcard/installer.xml >/dev/null 2>&1 || true
+            adb pull /sdcard/installer.xml screenshots/installer.xml >/dev/null 2>&1 || true
+
+            echo 'Emulator verification completed; screenshots and UI hierarchy saved.'
+
+      - name: Upload emulator screenshots and UI dumps
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: restudio-android-emulator-evidence
+          path: screenshots/
+          if-no-files-found: warn
+          retention-days: 14
