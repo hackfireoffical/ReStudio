@@ -1,0 +1,88 @@
+name: Build Mobile Studio APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'source.tar.gz.part-*'
+      - 'app/**'
+      - '.github/workflows/build-apk.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Expand recovered source on first run
+        shell: bash
+        run: |
+          if [ ! -f app/apktool.yml ]; then
+            test -f source.tar.gz.part-aa
+            cat source.tar.gz.part-* > "$RUNNER_TEMP/mobile-studio-source.tar.gz"
+            tar -xzf "$RUNNER_TEMP/mobile-studio-source.tar.gz" -C "$RUNNER_TEMP"
+            mkdir -p app
+            cp -a "$RUNNER_TEMP/recovered-apk-source/." app/
+            rm -f source.tar.gz.part-*
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            if ! git diff --cached --quiet; then
+              git commit -m "Expand recovered Mobile Studio APK project"
+              git push origin "HEAD:$GITHUB_REF_NAME"
+            fi
+          fi
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android build tools
+        run: sdkmanager "platform-tools" "build-tools;35.0.0"
+
+      - name: Install Apktool
+        run: |
+          curl -fL --retry 3 \
+            https://github.com/iBotPeaches/Apktool/releases/download/v3.0.3/apktool_3.0.3.jar \
+            -o "$RUNNER_TEMP/apktool.jar"
+
+      - name: Rebuild decoded APK
+        run: java -Xmx5g -jar "$RUNNER_TEMP/apktool.jar" b app -o "$RUNNER_TEMP/mobile-studio-unsigned.apk"
+
+      - name: Align APK
+        run: "$ANDROID_HOME/build-tools/35.0.0/zipalign" -f -p 4 "$RUNNER_TEMP/mobile-studio-unsigned.apk" "$RUNNER_TEMP/mobile-studio-aligned.apk"
+
+      - name: Create temporary debug signing key
+        run: |
+          keytool -genkeypair -v \
+            -keystore "$RUNNER_TEMP/mobile-studio-debug.keystore" \
+            -storepass android -keypass android \
+            -alias androiddebugkey \
+            -dname "CN=Android Debug,O=Android,C=US" \
+            -keyalg RSA -keysize 2048 -validity 10000
+
+      - name: Sign and verify APK
+        run: |
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" sign \
+            --ks "$RUNNER_TEMP/mobile-studio-debug.keystore" \
+            --ks-pass pass:android --key-pass pass:android \
+            --out mobile-studio-debug.apk \
+            "$RUNNER_TEMP/mobile-studio-aligned.apk"
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose mobile-studio-debug.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-studio-debug-apk
+          path: mobile-studio-debug.apk
+          if-no-files-found: error
+          retention-days: 14
