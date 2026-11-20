@@ -1,0 +1,52 @@
+.class final Lorg/luaj/vm2/lib/jse/CoerceJavaToLua$IntCoercion;
+.super Ljava/lang/Object;
+
+# interfaces
+.implements Lorg/luaj/vm2/lib/jse/CoerceJavaToLua$Coercion;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lorg/luaj/vm2/lib/jse/CoerceJavaToLua;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x1a
+    name = "IntCoercion"
+.end annotation
+
+
+# direct methods
+.method private constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+.method synthetic constructor <init>(Lorg/luaj/vm2/lib/jse/CoerceJavaToLua$1;)V
+    .locals 0
+
+    invoke-direct {p0}, Lorg/luaj/vm2/lib/jse/CoerceJavaToLua$IntCoercion;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public coerce(Ljava/lang/Object;)Lorg/luaj/vm2/LuaValue;
+    .locals 0
+
+    check-cast p1, Ljava/lang/Number;
+
+    invoke-virtual {p1}, Ljava/lang/Number;->intValue()I
+
+    move-result p1
+
+    invoke-static {p1}, Lorg/luaj/vm2/LuaInteger;->valueOf(I)Lorg/luaj/vm2/LuaInteger;
+
+    move-result-object p1
+
+    return-object p1
+.end method
