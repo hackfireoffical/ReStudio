@@ -79,7 +79,7 @@ jobs:
   emulator-test:
     name: Android emulator UI verification
     needs: build
-    runs-on: ubuntu-24.04
+    runs-on: macos-15
     steps:
       - name: Download APK artifact
         uses: actions/download-artifact@v4
@@ -92,7 +92,7 @@ jobs:
         with:
           api-level: 35
           target: google_apis
-          arch: x86_64
+          arch: arm64-v8a
           profile: pixel_2
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
