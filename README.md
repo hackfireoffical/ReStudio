@@ -22,7 +22,7 @@ The workflow rebuilds the Android project with Apktool, aligns the APK, signs it
 ## Project information
 
 - App name: **ReStudio**
-- Package: `com.exampletest.mobilestudiotest`
+- Package: `com.hackfire.restudio`
 - Android minimum: 7.0 (API 24)
 - Build workflow: GitHub Actions
 

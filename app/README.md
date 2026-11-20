@@ -21,7 +21,7 @@ The workflow uses a temporary debug signing key. Its signature differs from the 
 
 - Name: Mobile Studio
 - Version: 1.1
-- Package: `com.exampletest.mobilestudiotest`
+- Package: `com.hackfire.restudio`
 
 ## Legal / notices
 

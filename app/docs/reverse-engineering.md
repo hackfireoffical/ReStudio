@@ -4,7 +4,7 @@
 
 - Input: `mobilestudio_ver1-1.apk` (provided for this recovery)
 - SHA-256: `c50bfc91b48a044b22b16b56bb4a986ff2af217e04d15ba3fa5cafa53158edc8`
-- Package: `com.exampletest.mobilestudiotest`
+- Package: `com.hackfire.restudio`
 - Version: `1.1` (version code `2`)
 - Minimum SDK: `24` (Android 7.0)
 - Target SDK: `37`
@@ -18,11 +18,11 @@ Static inspection was performed with [REA](https://github.com/morluto/rea), usin
 
 Observed app classes include:
 
-- `com.exampletest.mobilestudiotest.StudioApp`
-- `com.exampletest.mobilestudiotest.core.Studio`
-- `com.exampletest.mobilestudiotest.lua.StudioSettings`
+- `com.hackfire.restudio.StudioApp`
+- `com.hackfire.restudio.core.Studio`
+- `com.hackfire.restudio.lua.StudioSettings`
 
-The APK contains a main launcher activity `com.exampletest.mobilestudiotest.MainActivity`, declares OpenGL ES 2.0 as a required feature, and registers import intent filters for content/file URIs and Roblox/XML model formats.
+The APK contains a main launcher activity `com.hackfire.restudio.MainActivity`, declares OpenGL ES 2.0 as a required feature, and registers import intent filters for content/file URIs and Roblox/XML model formats.
 
 ## Recovery format and limitations
 

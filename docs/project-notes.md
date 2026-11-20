@@ -3,7 +3,7 @@
 ## App information
 
 - App name: ReStudio
-- Package: `com.exampletest.mobilestudiotest`
+- Package: `com.hackfire.restudio`
 - App version represented by the project: `1.1` (version code `2`)
 - Minimum Android version: Android 7.0 (API 24)
 - Target SDK: 37
