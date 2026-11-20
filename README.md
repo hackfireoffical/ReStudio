@@ -2,7 +2,7 @@
 
 **A reproducible recovery of the Mobile Studio for Android APK.**
 
-ReStudio is the name of this open-source recovery project and the updated display name shown by the rebuilt app. The application is based on the original **Mobile Studio v1.1**: its package name, resources, assets, and recovered application code have not been redesigned or rebranded.
+ReStudio is the name of this open-source recovery project and the updated display name shown by the rebuilt app. The application is based on the original **Mobile Studio v1.1**. Its package identity and underlying functionality are retained; the launcher display name and icon are now branded as ReStudio.
 
 This repository exists to make the supplied APK easier to inspect, rebuild, and maintain. It includes the decoded Android resources and manifest, app assets, native libraries, and Smali representation of the bytecode, together with a GitHub Actions workflow that produces a debug-signed APK.
 
