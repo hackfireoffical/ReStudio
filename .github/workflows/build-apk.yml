@@ -9,7 +9,7 @@ on:
       - '.github/workflows/build-apk.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -18,24 +18,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Expand recovered source on first run
-        shell: bash
-        run: |
-          if [ ! -f app/apktool.yml ]; then
-            test -f source.tar.gz.part-aa
-            cat source.tar.gz.part-* > "$RUNNER_TEMP/mobile-studio-source.tar.gz"
-            tar -xzf "$RUNNER_TEMP/mobile-studio-source.tar.gz" -C "$RUNNER_TEMP"
-            mkdir -p app
-            cp -a "$RUNNER_TEMP/recovered-apk-source/." app/
-            rm -f source.tar.gz.part-*
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -A
-            if ! git diff --cached --quiet; then
-              git commit -m "Expand recovered Mobile Studio APK project"
-              git push origin "HEAD:$GITHUB_REF_NAME"
-            fi
-          fi
+      - name: Verify recovered source
+        run: test -f app/apktool.yml
 
       - name: Set up Java
         uses: actions/setup-java@v4
