@@ -120,14 +120,12 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
           emulator-boot-timeout: 300
           pre-emulator-launch-script: |
-            {
-              echo "Emulator binary:"
-              "$ANDROID_HOME/emulator/emulator" -version
-              echo "AVD config:"
-              cat "$ANDROID_AVD_HOME/test.avd/config.ini"
-              echo "ADB devices before boot:"
-              adb devices -l
-            } >> screenshots/emulator-diagnostics.txt 2>&1
+            echo "Emulator binary:" >> screenshots/emulator-diagnostics.txt
+            "$ANDROID_HOME/emulator/emulator" -version >> screenshots/emulator-diagnostics.txt 2>&1
+            echo "AVD config:" >> screenshots/emulator-diagnostics.txt
+            cat "$ANDROID_AVD_HOME/test.avd/config.ini" >> screenshots/emulator-diagnostics.txt
+            echo "ADB devices before boot:" >> screenshots/emulator-diagnostics.txt
+            adb devices -l >> screenshots/emulator-diagnostics.txt
           script: |
             set -eu
             echo 'ADB device list after emulator boot'
