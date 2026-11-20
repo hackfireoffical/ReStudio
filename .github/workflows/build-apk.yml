@@ -87,22 +87,55 @@ jobs:
           name: restudio-debug-apk
           path: test-apk
 
+      - name: Prepare emulator diagnostics
+        run: |
+          mkdir -p screenshots
+          echo "Runner: $RUNNER_OS / $ImageOS" > screenshots/emulator-diagnostics.txt
+          echo "Kernel: $(uname -a)" >> screenshots/emulator-diagnostics.txt
+          echo "Memory:" >> screenshots/emulator-diagnostics.txt
+          free -h >> screenshots/emulator-diagnostics.txt
+          echo "KVM device:" >> screenshots/emulator-diagnostics.txt
+          ls -l /dev/kvm >> screenshots/emulator-diagnostics.txt 2>&1 || true
+          echo "CPU virtualization flags:" >> screenshots/emulator-diagnostics.txt
+          grep -m1 -Eo 'vmx|svm' /proc/cpuinfo >> screenshots/emulator-diagnostics.txt || true
+
+      - name: Enable KVM access
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -l /dev/kvm
+
       - name: Run ReStudio on Android emulator
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@v2.33.0
         with:
           api-level: 35
           target: google_apis
           arch: x86_64
           profile: pixel_2
+          cores: 2
+          ram-size: 2048M
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
-          emulator-boot-timeout: 600
+          disable-linux-hw-accel: false
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
+          emulator-boot-timeout: 300
+          pre-emulator-launch-script: |
+            {
+              echo "Emulator binary:"
+              "$ANDROID_HOME/emulator/emulator" -version
+              echo "AVD config:"
+              cat "$ANDROID_AVD_HOME/test.avd/config.ini"
+              echo "ADB devices before boot:"
+              adb devices -l
+            } >> screenshots/emulator-diagnostics.txt 2>&1
           script: |
             set -euo pipefail
-            mkdir -p screenshots
-
-            echo 'Installing ReStudio APK on a clean Android 15 emulator'
+            echo 'ADB device list after emulator boot'
+            adb devices -l | tee screenshots/adb-devices.txt
             adb wait-for-device
+            adb shell getprop sys.boot_completed | grep -q '^1$'
+
+            echo 'Installing ReStudio APK on Android 15'
             adb install test-apk/restudio-debug.apk
 
             echo 'Checking installed package metadata'
@@ -117,7 +150,7 @@ jobs:
             grep -q 'com.hackfire.restudio' screenshots/activities.txt
             adb exec-out screencap -p > screenshots/app-running.png
 
-            echo 'Opening launcher app drawer to inspect the actual Android icon'
+            echo 'Opening Android launcher app drawer'
             adb shell input keyevent KEYCODE_HOME
             sleep 2
             adb shell input swipe 540 1750 540 450 350
@@ -127,10 +160,9 @@ jobs:
             grep -q 'ReStudio' screenshots/launcher.xml
             adb exec-out screencap -p > screenshots/launcher-app-drawer.png
 
+            echo 'Launcher UI check passed. Screenshot requires visual inspection before calling the icon verified.'
 
-            echo 'Emulator verification completed; screenshots and UI hierarchy saved.'
-
-      - name: Upload emulator screenshots and UI dumps
+      - name: Upload emulator screenshots and diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
