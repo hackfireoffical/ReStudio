@@ -686,7 +686,7 @@
 
     const/4 v13, 0x1
 
-    const-string v10, "Mobile Studio"
+    const-string v10, "ReStudio"
 
     const/high16 v11, 0x41800000    # 16.0f
 
@@ -1061,7 +1061,7 @@
 
     .line 86
     .local v8, "$i$a$-apply-StartScreen$8\\9\\86\\0":I
-    const-string v9, "About Mobile Studio"
+    const-string v9, "About ReStudio"
 
     check-cast v9, Ljava/lang/CharSequence;
 
@@ -4271,7 +4271,7 @@
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v4, "You\'re using Mobile Studio as a guest. Sign in to see "
+    const-string v4, "You\'re using ReStudio as a guest. Sign in to see "
 
     invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -6196,7 +6196,7 @@
 
     const/4 v7, 0x0
 
-    const-string v2, "You\'re using Mobile Studio as a guest. Sign in to see the group experiences you can edit."
+    const-string v2, "You\'re using ReStudio as a guest. Sign in to see the group experiences you can edit."
 
     const-string v3, "Sign in with Roblox"
 

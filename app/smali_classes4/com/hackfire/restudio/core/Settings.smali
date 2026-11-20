@@ -1076,7 +1076,7 @@
     .line 104
     const-string v0, "theme"
 
-    const-string v1, "Dark"
+    const-string v1, "High Contrast"
 
     invoke-direct {p0, v0, v1}, Lcom/hackfire/restudio/core/Settings;->s(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 

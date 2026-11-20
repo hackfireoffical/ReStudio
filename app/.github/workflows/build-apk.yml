@@ -1,4 +1,4 @@
-name: Build Mobile Studio APK
+name: Build ReStudio APK
 
 on:
   workflow_dispatch:

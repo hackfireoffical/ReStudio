@@ -1,6 +1,6 @@
-# Mobile Studio v1.1 — recovered Android project
+# ReStudio v1.1 — recovered Android project
 
-This is an authorized APK recovery of Mobile Studio v1.1, intended to preserve the supplied app's existing UI, assets, package identity, and behavior while making the recovered representation inspectable and rebuildable.
+This is an authorized APK recovery of ReStudio v1.1, intended to preserve the supplied app's existing UI, assets, package identity, and behavior while making the recovered representation inspectable and rebuildable.
 
 ## Important limitation
 
@@ -11,7 +11,7 @@ No redesign or feature changes are intended. The workflow rebuilds the decoded A
 ## Build with GitHub Actions
 
 1. Open **Actions**.
-2. Select **Build Mobile Studio APK**.
+2. Select **Build ReStudio APK**.
 3. Press **Run workflow**.
 4. Download `mobile-studio-debug-apk` from the completed run.
 
@@ -19,7 +19,7 @@ The workflow uses a temporary debug signing key. Its signature differs from the 
 
 ## App identity
 
-- Name: Mobile Studio
+- Name: ReStudio
 - Version: 1.1
 - Package: `com.hackfire.restudio`
 

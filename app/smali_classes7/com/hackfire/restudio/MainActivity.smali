@@ -19003,7 +19003,7 @@
 
     invoke-direct {v9}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v10, "About Mobile Studio (v"
+    const-string v10, "About ReStudio (v"
 
     invoke-virtual {v9, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -25412,7 +25412,7 @@
     .line 128
     sget-object v5, Lcom/hackfire/restudio/core/OutputLog;->INSTANCE:Lcom/hackfire/restudio/core/OutputLog;
 
-    const-string v6, "Mobile Studio ready. Open a .rbxl/.rbxm file or one of your Roblox games, or start building!"
+    const-string v6, "ReStudio ready. Open a .rbxl/.rbxm file or one of your Roblox games, or start building!"
 
     invoke-virtual {v5, v6}, Lcom/hackfire/restudio/core/OutputLog;->info(Ljava/lang/String;)V
 

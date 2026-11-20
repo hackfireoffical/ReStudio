@@ -956,7 +956,7 @@
 
     const/16 v24, 0x1
 
-    const-string v21, "Mobile Studio"
+    const-string v21, "ReStudio"
 
     const/high16 v22, 0x41a00000    # 20.0f
 

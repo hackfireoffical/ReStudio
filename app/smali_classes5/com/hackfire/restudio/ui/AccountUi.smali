@@ -7960,7 +7960,7 @@
 
     sget-object v0, Lcom/hackfire/restudio/ui/AccountUi;->INSTANCE:Lcom/hackfire/restudio/ui/AccountUi;
 
-    const-string v1, "Using Mobile Studio as a guest"
+    const-string v1, "Using ReStudio as a guest"
 
     invoke-direct {v0, p1, v1}, Lcom/hackfire/restudio/ui/AccountUi;->toast(Landroid/app/Activity;Ljava/lang/String;)V
 

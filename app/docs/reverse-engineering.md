@@ -14,7 +14,7 @@
 
 ## REA / JADX analysis
 
-Static inspection was performed with [REA](https://github.com/morluto/rea), using its Android APK analysis workflow and the pinned JADX headless engine 0.7.1. REA is an analysis aid; it is not part of Mobile Studio and is not required to rebuild this APK.
+Static inspection was performed with [REA](https://github.com/morluto/rea), using its Android APK analysis workflow and the pinned JADX headless engine 0.7.1. REA is an analysis aid; it is not part of ReStudio and is not required to rebuild this APK.
 
 Observed app classes include:
 

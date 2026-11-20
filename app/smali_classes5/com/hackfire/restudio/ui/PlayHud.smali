@@ -3255,7 +3255,7 @@
 
     const/4 v6, 0x0
 
-    const-string v1, "Playtest in Mobile Studio: only you are in this server."
+    const-string v1, "Playtest in ReStudio: only you are in this server."
 
     const/high16 v2, 0x41500000    # 13.0f
 
