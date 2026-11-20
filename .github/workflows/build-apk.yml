@@ -131,8 +131,8 @@ jobs:
 
             echo 'Checking installed package metadata'
             adb shell dumpsys package com.hackfire.restudio > screenshots/package-dump.txt
-            grep -q 'versionName=1.1.6' screenshots/package-dump.txt
-            grep -q 'versionCode=116' screenshots/package-dump.txt
+            grep -q 'versionName=1.1.7' screenshots/package-dump.txt
+            grep -q 'versionCode=117' screenshots/package-dump.txt
 
             echo 'Launching ReStudio'
             adb shell monkey -p com.hackfire.restudio 1
