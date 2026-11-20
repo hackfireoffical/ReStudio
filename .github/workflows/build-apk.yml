@@ -90,20 +90,19 @@ jobs:
       - name: Run ReStudio on Android emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 28
+          api-level: 35
           target: google_apis
           arch: x86_64
           profile: pixel_2
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
-          disable-linux-hw-accel: true
           emulator-boot-timeout: 600
-          env: ANDROID_I_WANT_MY_TCG=yes
           script: |
             set -euo pipefail
             mkdir -p screenshots
 
             echo 'Installing ReStudio APK on a clean Android 15 emulator'
+            adb wait-for-device
             adb install test-apk/restudio-debug.apk
 
             echo 'Checking installed package metadata'
@@ -128,16 +127,6 @@ jobs:
             grep -q 'ReStudio' screenshots/launcher.xml
             adb exec-out screencap -p > screenshots/launcher-app-drawer.png
 
-            echo 'Opening Android package installer for an update-prompt screenshot'
-            adb push test-apk/restudio-debug.apk /sdcard/Download/restudio-debug.apk >/dev/null
-            adb shell am start -a android.intent.action.VIEW \
-              -d file:///sdcard/Download/restudio-debug.apk \
-              -t application/vnd.android.package-archive \
-              --grant-read-uri-permission || true
-            sleep 4
-            adb exec-out screencap -p > screenshots/installer-screen.png
-            adb shell uiautomator dump /sdcard/installer.xml >/dev/null 2>&1 || true
-            adb pull /sdcard/installer.xml screenshots/installer.xml >/dev/null 2>&1 || true
 
             echo 'Emulator verification completed; screenshots and UI hierarchy saved.'
 
