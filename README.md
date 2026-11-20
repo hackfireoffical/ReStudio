@@ -28,7 +28,7 @@ The workflow rebuilds the Android project with Apktool, aligns the APK, signs it
 
 ## Repository structure and technical notes
 
-The `app/` directory contains the decoded Android resources, manifest, assets, native libraries, and Smali bytecode representation used by the build workflow. It is not a conventional Android Studio Kotlin/Java source project. See [`docs/reverse-engineering.md`](docs/reverse-engineering.md) for technical details and build limitations.
+The `app/` directory contains the Android resources, manifest, assets, native libraries, and compiled-code representation used by the build workflow. It is not a conventional Android Studio Kotlin/Java source project. See [`docs/project-notes.md`](docs/project-notes.md) for technical details and build limitations.
 
 Static inspection is not a security certification, and no comprehensive runtime audit is claimed. Review permissions and code before installing or using the app. Never share account passwords, session cookies, or other authentication secrets.
 
